@@ -1,24 +1,24 @@
 <div class="d-flex bg-light w-100 h-100">
-  <div class="p-2 d-flex justify-content-center align-items-center w-100 h-100" style="flex-basis: 15%; max-width: 15%; background-image: url('../../assets/img/home.svg'); background-size: cover;">
-    <img src="https://gtccorporation.com/wp-content/uploads/2020/09/logo-gtc-chico.png" alt="" style="width: 100%; filter: brightness(0.01) invert(); ">
+  <div class="p-2 d-flex justify-content-center align-items-center w-100 h-100" style="flex-basis: 15%; max-width: 15%; background-image: url('../../assets/img/fondo.jpg'); background-size: cover;">
+    <!-- <img src="../../assets/img/fondo.jpg" alt="" style="width: 100%; filter: brightness(0.01) invert(); "> -->
   </div>
   <div class="p-3 w-100 h-100" style="flex-basis: 85%;" style="max-width: 85%;">
     <div class="gap-2 d-flex h-100 w-100">
-      <div class="p-2 gap-2 d-flex flex-column border rounded text-center" style="flex-basis: 15%; background-color: white;">
+      <!-- <div class="p-2 gap-2 d-flex flex-column border rounded text-center" style="flex-basis: 15%; background-color: white;">
         <h4>Gestión</h4>
         <mat-button-toggle-group vertical name="fontStyle" aria-label="Font Style">
           <mat-button-toggle (click)="setView('d')" value="bold">Docentes</mat-button-toggle>
-          <mat-button-toggle (click)="setView('2')" value="italic">Opcion 2</mat-button-toggle>
+           <mat-button-toggle (click)="setView('2')" value="italic">Opcion 2</mat-button-toggle>
           <mat-button-toggle (click)="setView('3')" value="underline">Opcion 3</mat-button-toggle>
         </mat-button-toggle-group>
-      </div>
+      </div> -->
 
       <div *ngIf="view == 'd'" class="card p-2 gap-2 w-100" style="flex-basis: 85%;" style="max-height: 100%; overflow-y: auto;">
         <div class="d-flex gap-4 align-items-center" >
-          <h1 class="display-5 m-0">Sección Docentes</h1>
+          <h1 class="display-5 m-0">Listado de Docentes</h1>
           <div class="d-flex gap-3" style="max-height: 100%;">
             <button (click)="setDataView('create')" class="btn btn-primary"><i class="fas fa-plus"></i> Crear</button>
-            <button (click)="setDataView('list')" class="btn btn-primary"><i class="fas fa-eye"></i> Ver Listado</button>
+            <button (click)="setDataView('list')" class="btn btn-primary"><i class="fas fa-eye"></i> listar</button>
           </div>
         </div>
 
