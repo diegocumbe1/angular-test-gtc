@@ -1,0 +1,149 @@
+<div class="d-flex bg-light w-100 h-100">
+  <div class="p-2 d-flex justify-content-center align-items-center w-100 h-100" style="flex-basis: 15%; max-width: 15%; background-image: url('../../assets/img/home.svg'); background-size: cover;">
+    <img src="https://gtccorporation.com/wp-content/uploads/2020/09/logo-gtc-chico.png" alt="" style="width: 100%; filter: brightness(0.01) invert(); ">
+  </div>
+  <div class="p-3 w-100 h-100" style="flex-basis: 85%;" style="max-width: 85%;">
+    <div class="gap-2 d-flex h-100 w-100">
+      <div class="p-2 gap-2 d-flex flex-column border rounded text-center" style="flex-basis: 15%; background-color: white;">
+        <h4>Gestión</h4>
+        <mat-button-toggle-group vertical name="fontStyle" aria-label="Font Style">
+          <mat-button-toggle (click)="setView('d')" value="bold">Docentes</mat-button-toggle>
+          <mat-button-toggle (click)="setView('2')" value="italic">Opcion 2</mat-button-toggle>
+          <mat-button-toggle (click)="setView('3')" value="underline">Opcion 3</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+
+      <div *ngIf="view == 'd'" class="card p-2 gap-2 w-100" style="flex-basis: 85%;" style="max-height: 100%; overflow-y: auto;">
+        <div class="d-flex gap-4 align-items-center" >
+          <h1 class="display-5 m-0">Sección Docentes</h1>
+          <div class="d-flex gap-3" style="max-height: 100%;">
+            <button (click)="setDataView('create')" class="btn btn-primary"><i class="fas fa-plus"></i> Crear</button>
+            <button (click)="setDataView('list')" class="btn btn-primary"><i class="fas fa-eye"></i> Ver Listado</button>
+          </div>
+        </div>
+
+        <table *ngIf="dataView == 'list'" class="border rounded" mat-table [dataSource]="docentes">
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef> Id </th>
+            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="numerodocumento">
+            <th mat-header-cell *matHeaderCellDef> Documento </th>
+            <td mat-cell *matCellDef="let element"> {{element.numerodocumento}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="nombres">
+            <th mat-header-cell *matHeaderCellDef> Nombres </th>
+            <td mat-cell *matCellDef="let element"> {{element.nombres}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="apellidos">
+            <th mat-header-cell *matHeaderCellDef> Apellidos </th>
+            <td mat-cell *matCellDef="let element"> {{element.apellidos}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="nacimiento">
+            <th mat-header-cell *matHeaderCellDef> Nacimiento </th>
+            <td mat-cell *matCellDef="let element"> {{element.fecha_nacimiento}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef> Email </th>
+            <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="grado_escolaridad">
+            <th mat-header-cell *matHeaderCellDef> Escolaridad </th>
+            <td mat-cell *matCellDef="let element"> {{element.grado_escolaridad}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="accion">
+            <th mat-header-cell *matHeaderCellDef> Acción </th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-icon-button color="primary" (click)="editDocent(element)"><mat-icon>edit</mat-icon></button>
+              <button mat-icon-button color="warn" (click)="deleteDocent(element)"><mat-icon>delete</mat-icon></button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <div *ngIf="dataView == 'create'" class="w-100 h-100 border rounded gap-2 p-4 d-flex flex-column justify-content-between">
+          <h1>Crea un nuevo Docente</h1>
+          <h4>Asegúrate de llena todos los campos requeridos*</h4>
+          <div class="d-flex gap-2 w-100 justify-content-between">
+            <mat-form-field style="flex-basis: 30%;">
+              <mat-label>Nombres</mat-label>
+              <input matInput placeholder="Pepito Pérez" [formControl]="name" required>
+              <mat-error *ngIf="name.invalid">{{getErrorNameMessage()}}</mat-error>
+            </mat-form-field>
+            <mat-form-field style="flex-basis: 30%;">
+              <mat-label>Apellidos</mat-label>
+              <input matInput placeholder="Rodríguez Gómez" [formControl]="surname" required>
+              <mat-error *ngIf="surname.invalid">{{getErrorSurnameMessage()}}</mat-error>
+            </mat-form-field>
+            <mat-form-field style="flex-basis: 30%;">
+              <mat-label>Email</mat-label>
+              <input matInput placeholder="ejemplo@gmail.com" [formControl]="email" required>
+              <mat-error *ngIf="email.invalid">{{getErrorEmailMessage()}}</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="d-flex gap-2 w-100 justify-content-between">
+            <mat-form-field style="flex-basis: 30%;">
+              <mat-label>Fecha de Nacimiento</mat-label>
+              <mat-hint>DD/MM/YYYY</mat-hint>
+              <input [(ngModel)]="fecha_nacimiento" matInput [matDatepicker]="datepicker" placeholder="Fecha">
+              <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+              <mat-datepicker #datepicker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field style="flex-basis: 30%;">
+              <mat-label>Escolaridad</mat-label>
+              <mat-select (selectionChange)="changeEscolarity($event)">
+                <mat-option *ngFor="let food of foods" [value]="food.value">
+                  {{food.viewValue}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field style="flex-basis: 30%;">
+              <mat-label>Grado Responsable</mat-label>
+              <mat-select (selectionChange)="changeGrade($event)">
+                <mat-option *ngFor="let grade of grades" [value]="grade.value">
+                  {{grade.viewValue}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="d-flex gap-2 w-100 justify-content-between">
+            <mat-form-field style="flex-basis: 45%;">
+              <mat-label>Celular</mat-label>
+              <input maxlength="10" type="number" matInput placeholder="123 456 7890" [formControl]="cellphone" required>
+              <mat-error *ngIf="cellphone.invalid">{{getErrorCellphoneMessage()}}</mat-error>
+            </mat-form-field>
+            <mat-form-field style="flex-basis: 45%;">
+              <mat-label>Teléfono</mat-label>
+              <input maxlength="7" type="number" matInput placeholder="12 34 567" [formControl]="phone" required>
+              <mat-error *ngIf="phone.invalid">{{getErrorPhoneMessage()}}</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="d-flex gap-2 w-100 justify-content-between">
+            <mat-form-field style="flex-basis: 45%;">
+              <mat-label>Tipo de Documento</mat-label>
+              <mat-select (selectionChange)="onOptionSelected($event)">
+                <mat-option *ngFor="let documento of tipoDocumentoList" [value]="documento.id">
+                  {{documento.descripcion}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field style="flex-basis: 45%;">
+              <mat-label>Documento</mat-label>
+              <input maxlength="7" type="number" matInput placeholder="12.345.678" [formControl]="document" required>
+              <mat-error *ngIf="document.invalid">{{getErrorDocumentMessage()}}</mat-error>
+            </mat-form-field>
+          </div>
+          <button (click)="addDocent()" mat-raised-button color="primary">Añadir Nuevo Docente</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
